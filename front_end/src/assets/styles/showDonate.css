@@ -1,0 +1,20 @@
+.tete{
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: cadetblue;
+    
+}
+
+.achTete{
+    color: burlywood;
+    margin-left: 35%;
+}
+
+.achBorder{
+    border: 5px solid black;
+    border-radius: 20%;
+    margin-right: 10%;
+    margin-bottom: 2%;
+}
+d{
+    color: blue;
+}

@@ -1,0 +1,43 @@
+.AUVbg{
+    background-image: url('../images/adUserBG.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 180vh;
+
+    background-attachment: fixed;
+}
+.card{
+    background-color: rgba(240, 240, 240, 0.5);
+    width: 30%;
+    border-radius: 5%;
+    margin-left: 35%;
+    border: 5px solid black;
+    margin-bottom: 5%;
+    backdrop-filter: blur(5px);
+    padding: 0.5%;
+    transition: transform 0.3s ease; /* Transition effect for smooth hover */
+}
+
+.card:hover {
+  transform: scale(1.1); /* Increase the size on hover */
+}
+p{
+    color: black;
+    font-weight: bold;
+}
+.loc{
+    float: right;
+    padding-bottom: 20%;
+}
+.adName{
+    color: rgb(101, 101, 137);
+}
+.donBtn{
+    margin-left: 60%;
+    border-radius: 20%;
+    transition: background-color 0.3s ease;
+}
+.donBtn:hover {
+    background-color: rgb(159, 201, 108); /* Background color change on hover */
+    color: white;
+  }

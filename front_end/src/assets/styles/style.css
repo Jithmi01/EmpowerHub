@@ -1,0 +1,93 @@
+.site-layout-background {
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  padding: 5px 16px;
+  align-items: center;
+}
+
+
+.login {
+  background-image: url('../images/poverty1.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+ 
+
+}
+
+.dashbaord{
+  /* background-image: url('../images/admin.jpg  '); */
+
+  background-image: url('../images/4d.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 180vh;
+}
+
+/*admin css */
+.otherdash{
+  background-image: linear-gradient(to right top, #362e6d, #30316a, #2c3467, #2a3663, #29385e, #2b476d, #2e567b, #316589, #2d89ac, #29aeca, #39d4e1, #5ffbf1);
+    background-repeat: no-repeat;
+  background-position: center;
+  height: 180vh;
+
+}
+.register{
+  
+  background-image: url('../images/hand.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh;
+}
+
+.site-layout-content {
+  min-height: 280px;
+  padding: 24px;
+}
+
+.ant-row-rtl #components-layout-demo-top .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
+}
+.heading {
+  color: white;
+  text-align: center;
+  font-size: 40px;
+  margin: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+/* CSS */
+.button-8 {
+ 
+cursor: pointer;
+outline: 0;
+color: #fff;
+background-color: #0d6efd;
+border-color: #0d6efd;
+display: inline-block;
+font-weight: 400;
+line-height: 1.5;
+text-align: center;
+border: 1px solid transparent;
+padding: 6px 12px;
+font-size: 16px;
+border-radius: .25rem;
+transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+:hover {
+    color: #fff;
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+}
+

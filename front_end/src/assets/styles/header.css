@@ -1,0 +1,7 @@
+.dropdown-btn > .ant-dropdown-trigger  {
+    border: none;
+  }
+  
+  .dropdown-btn > .ant-dropdown-trigger > span {
+    background-color: white !important;
+  }
