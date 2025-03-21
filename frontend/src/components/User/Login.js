@@ -267,7 +267,7 @@ const Login = () => {
                         textAlign: 'center',
                     }}
                 >
-                    No Poverty Design ©2023 Created by Team 48
+                    
                 </Footer>
             </Layout>
 

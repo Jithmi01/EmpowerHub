@@ -1,0 +1,33 @@
+.tete{
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: cadetblue;
+    
+}
+
+.achTete{
+    color: burlywood;
+    margin-left: 35%;
+}
+
+.achBorder{
+    border: 5px solid black;
+    border-radius: 20%;
+    margin-right: 10%;
+    margin-bottom: 2%;
+}
+d{
+    color: blue;
+}
+
+/* Admin side */
+/* Example CSS for custom search box styles */
+.ant-input-affix-wrapper {
+    background-color: #f0f8ff;  /* Light background color */
+    border-radius: 8px;         /* Round corners */
+    padding: 8px 16px;          /* Padding inside the box */
+    border: 2px solid #0077B6;  /* Custom border color */
+}
+
+.ant-input {
+    font-size: 14px;            /* Font size */
+}

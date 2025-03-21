@@ -1,9 +1,11 @@
 import { Button, Card, Form, Input } from "antd";
-import { MailOutlined, PhoneOutlined, UserOutlined, DollarOutlined } from "@ant-design/icons";
+import { MailOutlined, PhoneOutlined, UserOutlined, DollarOutlined, CloseOutlined } from "@ant-design/icons";  // Import the CloseOutlined icon
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../../assets/styles/makedonate.css";
+import CustomRow from '../common/Form_header';
+import WrapperCard from '../common/Wrapper_card';
 
 const DonateForm = () => {
   const location = useLocation();
@@ -67,10 +69,23 @@ const DonateForm = () => {
       .catch((err) => console.error(`Error: ${err?.response?.data}`));
   };
 
+  const handleClose = () => {
+    navigate("/adsUserView"); 
+  };
+
   return (
     <div className="donate-container">
       <Card className="donate-card">
-        <h2 className="donate-title">I Want to Donate</h2>
+        <div className="close-icon" onClick={handleClose}>
+          <CloseOutlined style={{ fontSize: 20, cursor: 'pointer' }} />
+        </div>
+
+                <WrapperCard style={{ backgroundColor: '#0D1A45', height: '50px', paddingTop: '10px', borderRadius: 6, marginTop: '15px' }}>
+                    <CustomRow style={{ justifyContent: 'center' }}>
+                        <h2 style={{ color: 'white', margin: 0, fontSize: '24px' }}>I Want To Donate</h2>
+                    </CustomRow>
+                </WrapperCard>
+        
         <h3 className="donate-subtitle">{nameDon}</h3>
         <Form layout="vertical">
           <Form.Item

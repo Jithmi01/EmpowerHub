@@ -1,5 +1,5 @@
 import { Layout, Menu, theme, Col, Row } from "antd";
-import logo from "../../assets/images/logo2.png";
+import logo from "../../assets/images/EmpowerHub.png";
 import "../../assets/styles/style.css";
 import "../../assets/styles/header.css";
 import React, { useState } from "react";
@@ -34,12 +34,12 @@ const Header_bar = (props) => {
             <img
               src={logo}
               alt="Logo"
-              width={50}
-              style={{ marginTop: "30px" }}
+              width={100}
+              style={{ marginTop: "30px",paddingLeft:"30px" }}
             />
           </Col>
           <Col>
-            <h1 style={{ color: "white" }}>HelpingHands</h1>
+            <h1 style={{ color: "white", fontSize:"25px" }}>EmpowerHub</h1>
           </Col>
           <Logout />
         </Row>

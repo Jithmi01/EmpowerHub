@@ -55,7 +55,7 @@ const UserLayout = ({ children }) => {
         <Layout className="site-layout">
           <Content>{children}</Content>
           <Footer style={{ textAlign: "center" }}>
-            NoPoverty System ©2023
+            EmpowerHub ©2025
           </Footer>
         </Layout>
       </Layout>

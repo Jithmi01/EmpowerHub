@@ -65,7 +65,8 @@ function App() {
           </UserLayout>
         }
       />
-      {/* Sakuni's Routes Begn here */}
+
+      {}
       <Route path="/add" element={<JobPost />} />
       <Route
         path="/joblist"
@@ -107,8 +108,9 @@ function App() {
           </UserLayout>
         }
       />
-      {/*SakuniF's Routes Ends here*/}
-      {/* Leo's Routes Begin here */}
+      {}
+      
+      {}
       <Route path="/pdonation" element={<PublishAd />} />{" "}
       {/*Ad creation form(not being used)*/}
       <Route
@@ -157,7 +159,7 @@ function App() {
           </UserLayout>
         }
       />
-      {/*Leo's Routes Ends here*/}
+      {}
       <Route path="/addevent" element={<AddEvent />} />
       <Route
         path="/financial"
@@ -188,6 +190,9 @@ function App() {
       <Route path="/AllParticipants/:id" element={<AllParticipants />} />
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Navigate to={"/userDash"} />} />
+
+
+      
     </Routes>
   );
 }

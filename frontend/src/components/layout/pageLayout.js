@@ -67,7 +67,7 @@ const PageLayout = ({ children }) => {
           <Layout className="site-layout">
             <Content style={{ margin: "0 16px" }}>{children}</Content>
             <Footer style={{ textAlign: "center" }}>
-              Foodies System ©2023
+              EmpowerHub 
             </Footer>
           </Layout>
         </Layout>

@@ -41,6 +41,13 @@ const PublishAd = ({ isOpen, handleCancel, handleOk, selectedItem }) => {
         setLoading(false);
     };
 
+    const nameValidation = (_, value) => {
+        if (value && /[0-9!@#$%^&*(),.?":{}|<>]/.test(value)) {
+            return Promise.reject('Name cannot contain numbers or special characters.');
+        }
+        return Promise.resolve();
+    };
+
     return (
         <Modal
             open={isOpen}
@@ -49,9 +56,9 @@ const PublishAd = ({ isOpen, handleCancel, handleOk, selectedItem }) => {
             footer={null}
         >
             <div className="modal-container">
-                <WrapperCard style={{ backgroundColor: '#37475E', height: '50px', paddingTop: '10px', borderRadius: 6, marginTop: '15px' }}>
+                <WrapperCard style={{ backgroundColor: '#0D1A45', height: '50px', paddingTop: '10px', borderRadius: 6, marginTop: '15px' }}>
                     <CustomRow style={{ justifyContent: 'center' }}>
-                        <h2 style={{ color: 'white', margin: 0 }}>Publish Donation Advertisements</h2>
+                        <h2 style={{ color: 'white', margin: 0, fontSize: '24px' }}>Publish Donation Advertisements</h2>
                     </CustomRow>
                 </WrapperCard>
 
@@ -59,16 +66,27 @@ const PublishAd = ({ isOpen, handleCancel, handleOk, selectedItem }) => {
                     form={form}
                     layout='vertical'
                     onFinish={handleSubmit}
-                    style={{ padding: 24 }}
+                    style={{ padding: 24 , backgroundColor:'#f0f8ff'}}
                 >
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item name="name" label={<b>Name</b>} rules={[{ required: true, message: "Enter name" }]}> 
+                            <Form.Item
+                                name="name"
+                                label={<b style={{ fontSize: '18px' }}>Name</b>}
+                                rules={[
+                                    { required: true, message: "Enter name" },
+                                    { validator: nameValidation },
+                                ]}
+                            >
                                 <Input placeholder="Enter name" />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item name="location" label={<b>Location</b>} rules={[{ required: true, message: "Enter location" }]}> 
+                            <Form.Item
+                                name="location"
+                                label={<b style={{ fontSize: '18px' }}>Location</b>}
+                                rules={[{ required: true, message: "Enter location" }]}
+                            >
                                 <Input placeholder="Enter location" />
                             </Form.Item>
                         </Col>
@@ -76,18 +94,30 @@ const PublishAd = ({ isOpen, handleCancel, handleOk, selectedItem }) => {
                     
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item name="smallDes" label={<b>Short Description</b>} rules={[{ required: true, message: "Enter short description" }]}> 
+                            <Form.Item
+                                name="smallDes"
+                                label={<b style={{ fontSize: '18px' }}>Short Description</b>}
+                                rules={[{ required: true, message: "Enter short description" }]}
+                            >
                                 <Input placeholder="Enter short description" />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item name="help" label={<b>Help Required</b>} rules={[{ required: true, message: "Enter help required" }]}> 
+                            <Form.Item
+                                name="help"
+                                label={<b style={{ fontSize: '18px' }}>Help Required</b>}
+                                rules={[{ required: true, message: "Enter help required" }]}
+                            >
                                 <Input placeholder="Describe required help" />
                             </Form.Item>
                         </Col>
                     </Row>
                     
-                    <Form.Item name="longDes" label={<b>Detailed Description</b>} rules={[{ required: true, message: "Enter detailed description" }]}> 
+                    <Form.Item
+                        name="longDes"
+                        label={<b style={{ fontSize: '18px' }}>Detailed Description</b>}
+                        rules={[{ required: true, message: "Enter detailed description" }]}
+                    >
                         <Input.TextArea rows={4} placeholder="Enter detailed description" />
                     </Form.Item>
                     
@@ -103,6 +133,7 @@ const PublishAd = ({ isOpen, handleCancel, handleOk, selectedItem }) => {
                     </Row>
                 </Form>
             </div>
+
         </Modal>
     );
 };
