@@ -4,12 +4,8 @@ import axios from "axios";
 import {
   EditTwoTone,
   DeleteOutlined,
-  DeleteTwoTone,
-  DownloadOutlined,
-  FilePdfOutlined,
   SelectOutlined,
-  FilePdfTwoTone,
-  MessageOutlined,
+  FilePdfOutlined,
 } from "@ant-design/icons";
 import CustomRow from "../common/Form_header";
 import WrapperCard from "../common/Wrapper_card";
@@ -18,44 +14,22 @@ import DeleteModal from "../common/DeleteModal";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import JobPost from "./JobPost";
+import logo from '../../assets/images/EmpowerHub.png';
+
 const { Search } = Input;
 
 const JobList = () => {
   const [jobList, setJobList] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [openEditOrderModal, setOpenEditOrderModal] = useState(false);
-  const [searchResult, setSearchResult] = useState([]);
+  const [searchText, setSearchText] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [searchText, setSearchText] = useState("");
 
   const history = useNavigate();
 
-  //popup modal method.if add order click modal pop out
-  const addOrder = async () => {
-    setIsModalOpen(false);
-    setOpenEditOrderModal(false);
-    refresh();
-  };
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-    setIsEditModalOpen(false);
-    refresh();
-  };
-
-  //modal cancel button
-  const handleCancel = () => {
-    setIsModalOpen(false);
-    setIsEditModalOpen(false);
-  };
-  const handleDeleteCancel = () => {
-    setIsDeleteModalOpen(false); // Hide the delete modal
-  };
-  //retireve all the  data
+  // Fetch job list
   function getJobList() {
     axios
       .get("http://localhost:4000/jobHire/")
@@ -66,24 +40,27 @@ const JobList = () => {
         alert(err.message);
       });
   }
+
   useEffect(() => {
     getJobList();
   }, []);
 
+  // Refresh job list
   const refresh = async () => {
     await getJobList();
   };
 
-  //delete method
+  // Delete methods
   const handleDelete = async (_id) => {
-    setIsDeleteModalOpen(true); // Show the delete modal
-    setSelectedItem(_id); // Set the selected item to delete
+    setIsDeleteModalOpen(true);
+    setSelectedItem(_id);
   };
+
   const handleDeleteConfirm = async (_id) => {
     axios
       .delete("http://localhost:4000/jobHire/delete/" + selectedItem)
-      .then((result) => {
-        setIsDeleteModalOpen(false); // Hide the delete modal
+      .then(() => {
+        setIsDeleteModalOpen(false);
         refresh();
       })
       .catch((err) => {
@@ -91,86 +68,104 @@ const JobList = () => {
       });
   };
 
-  //tables header
-  //added pdf method
+  // PDF generation with logo and company details
   const generatePdf = () => {
-    const watermarkTitle = "Job List Report";
-    // Create the PDF document
-    var doc = new jsPDF();
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "bold");
-    doc.text(10, 10, "Job List Summary");
-    doc.setFillColor(220, 220, 220);
-    doc.rect(
-      0,
-      0,
-      doc.internal.pageSize.getWidth(),
-      doc.internal.pageSize.getHeight(),
-      "F"
-    );
-    //header and columns of the pdf
-    doc.autoTable({
-      columns: [
-        { header: "Job Title", dataKey: "jobTitle" },
-        { header: " Company", dataKey: "company" },
-        { header: "Location", dataKey: "location" },
-        { header: "Opening Date", dataKey: "openingDate" },
-        { header: "Closing Date", dataKey: "closingDate" },
-      ],
-      body: jobList.map((JobList) => {
-        return {
-          Row: Row,
-          jobTitle: JobList.jobTitle,
-          company: JobList.company,
-          location: JobList.location,
-          openingDate: JobList.openingDate,
-          closingDate: JobList.closingDate,
-        };
-      }),
-      didDrawPage: function (data) {
-        const pageSize = doc.internal.pageSize;
-        const pageHeight = pageSize.height
-          ? pageSize.height
-          : pageSize.getHeight();
-        const pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-        const x = pageWidth / 2;
-        const y = pageHeight / 2;
-        doc.setFontSize(65);
-        doc.setTextColor(255, 128, 128);
-        doc.text(watermarkTitle, x, y, null, null, "center");
-      },
-    });
-    doc.save("Job List Report.pdf");
+    const doc = new jsPDF();
+
+    // Load Image
+    const imgWidth = 20;
+    const imgHeight = 20;
+
+    const imgX = 10;
+    const imgY = 10;
+
+    const img = new Image();
+    img.src = logo;
+
+    img.onload = function () {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      const imgBase64 = canvas.toDataURL('image/png');
+
+      // Add the Image
+      doc.addImage(imgBase64, 'PNG', imgX, imgY, imgWidth, imgHeight);
+
+      // Company Details
+      doc.setFontSize(16);
+      doc.setFont('helvetica', 'bold');
+      doc.text('EmpowerHub - Skill Development & Learning Platform', 105, 20, { align: 'center' });
+
+      doc.setFontSize(12);
+      doc.setFont('helvetica', 'normal');
+      doc.text('No.40, Kaduwela Road, Malabe', 105, 28, { align: 'center' });
+      doc.text('Tel: +94 77 444 5555 | Email: empowerhub@gmail.com', 105, 36, { align: 'center' });
+
+      // Separator Line
+      doc.setDrawColor(0, 0, 0);
+      doc.setLineWidth(0.5);
+      doc.line(10, 45, 200, 45);
+
+      // PDF Title
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Job Vacancies Report', 105, 55, { align: 'center' });
+
+      // Table
+      doc.autoTable({
+        startY: 65,
+        columns: [
+          { header: 'Job Title', dataKey: 'jobTitle' },
+          { header: 'Company', dataKey: 'company' },
+          { header: 'Location', dataKey: 'location' },
+          { header: 'Opening Date', dataKey: 'openingDate' },
+          { header: 'Closing Date', dataKey: 'closingDate' },
+        ],
+        body: jobList.map((job) => ({
+          jobTitle: job.jobTitle,
+          company: job.company,
+          location: job.location,
+          openingDate: job.openingDate,
+          closingDate: job.closingDate,
+        })),
+        theme: 'grid',
+      });
+
+      // Save PDF
+      doc.save('Job_Vacancies_Report.pdf');
+    };
   };
 
   const Columns = [
     {
-      title: "Job Title",
+      title: <span style={{ fontWeight: "bold", fontSize: "16px" }}>Job Title</span>,
       dataIndex: "jobTitle",
       key: "jobTitle",
     },
     {
-      title: "Company",
+      title: <span style={{ fontWeight: "bold", fontSize: "16px" }}>Company</span>,
       dataIndex: "company",
       key: "company",
     },
     {
-      title: "Location",
+      title: <span style={{ fontWeight: "bold", fontSize: "16px" }}>Location</span>,
       dataIndex: "location",
       key: "location",
     },
     {
-      title: "Opening Date",
+      title: <span style={{ fontWeight: "bold", fontSize: "16px" }}>Opening Date</span>,
       dataIndex: "openingDate",
       key: "openingDate",
     },
     {
-      title: "Closing Date",
+      title: <span style={{ fontWeight: "bold", fontSize: "16px" }}>Closing Date</span>,
       dataIndex: "closingDate",
       key: "closingDate",
     },
     {
-      title: "Action",
+      title: <span style={{ fontWeight: "bold", fontSize: "16px" }}>Action</span>,
       key: "action",
       render: (text, record) => (
         <span>
@@ -198,103 +193,73 @@ const JobList = () => {
       ),
     },
   ];
+
   return (
     <>
-      <div
-        className="otherdash"
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-        }}
-      >
+      <div className="otherdash" style={{ minHeight: "100vh", display: "flex", backgroundColor: "#001f3f" }}>
         <div style={{ paddingLeft: 150 }}>
-          <br></br>
-          <br></br>
-          <br></br>
+          <br />
+          <br />
+          <br />
           <div style={{ paddingLeft: 870 }}>
             <Button
-              onClick={() => {
-                setIsModalOpen(true);
-              }}
+              onClick={() => setIsModalOpen(true)}
               type="primary"
+              style={{
+                backgroundColor: "#001f3f",
+                borderColor: "#001f3f",
+                fontSize: "16px",
+                padding: "10px 20px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center",
+              }}
             >
               Add New Vacancy
             </Button>
           </div>
-          <br></br>
-          <br></br>
-          <div
-            style={{
-              padding: 1,
-              alignItems: "center",
-              width: 1000,
-              height: 650,
-              borderRadius: 5,
-            }}
-          >
-            <WrapperCard
-              style={{ backgroundColor: "#37475E", borderRadius: 5 }}
-            >
-              <CustomRow
-                style={{ justifyContent: "space-between", padding: "10px" }}
-              >
-                <h1 style={{ color: "White", fontSize: 18 }}>Job Vacancies</h1>
+          <br />
+          <br />
+          <div style={{ backgroundColor: "#001f3f", padding: 20, borderRadius: 5 }}>
+            <WrapperCard style={{ backgroundColor: "#fff", borderRadius: 5 }}>
+              <CustomRow style={{ justifyContent: "space-between", padding: "10px" }}>
+                <h1 style={{ color: "darkblue", fontSize: "24px", fontWeight: "bold" }}>Job Vacancies</h1>
                 <Col span={12} />
                 <Search
-                  placeholder="Input search text"
+                  placeholder="Search by job tittle"
                   onChange={(e) => setSearchText(e.target.value)}
-                  style={{
-                    width: 250,
-                  }}
+                  style={{ width: 250 }}
                 />
-
-                {/* {jobList.filter((val) => {
-                                if (searchText === "") {
-                                    return val;
-                                } else if (val.jobTitle.toLowerCase().includes(searchText.toLowerCase()) ||
-                                    val.location.toLowerCase().includes(searchText.toLowerCase()) ||
-                                    val.company.toLowerCase().includes(searchText.toLowerCase()) ||
-                                    val.openingDate.toLowerCase().includes(searchText.toLowerCase()) ||
-                                    val.closingDate.toLowerCase().includes(searchText.toLowerCase())) {
-                                    return val;
-                                }
-                            })} */}
-
                 <Button
-                  icon={
-                    <FilePdfOutlined
-                      style={{ fontSize: "21px", color: "red" }}
-                      onClick={generatePdf}
-                    />
-                  }
+                  icon={<FilePdfOutlined style={{ fontSize: "21px", color: "red" }} onClick={generatePdf} />}
                 />
               </CustomRow>
             </WrapperCard>
+
             <Table
               columns={Columns}
               dataSource={jobList.filter((jobList) =>
-                jobList.jobTitle
-                  .toLowerCase()
-                  .includes(searchText.toLowerCase())
+                jobList.jobTitle.toLowerCase().includes(searchText.toLowerCase())
               )}
             />
 
-            {/* passig data to Job post using props */}
             <JobPost
               isOpen={isModalOpen}
-              handleCancel={handleCancel}
-              handleOk={addOrder}
+              handleCancel={() => setIsModalOpen(false)}
+              handleOk={refresh}
             />
 
             <JobPost
               isOpen={isEditModalOpen}
-              handleCancel={handleCancel}
-              handleOk={handleOk}
+              handleCancel={() => setIsEditModalOpen(false)}
+              handleOk={refresh}
               selectedItem={selectedItem}
             />
+
             <DeleteModal
               isModalOpen={isDeleteModalOpen}
-              handleCancel={handleDeleteCancel}
+              handleCancel={() => setIsDeleteModalOpen(false)}
               handleOk={handleDeleteConfirm}
               text="Do you want to delete the Job details?"
             />

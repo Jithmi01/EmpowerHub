@@ -30,6 +30,8 @@ import axios from "axios";
 import Admin from "./pages/AdminDashboard/Admin_dashboard";
 import Financial from "./components/Financial/Financial";
 import AdminLayout from "./layouts/AdminLayout";
+import HomePage from "./components/HomePage";
+import Navbar from "./components/Navbar";
 
 function App() {
   // const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
@@ -60,9 +62,7 @@ function App() {
       <Route
         path="/userDash"
         element={
-          <UserLayout>
-            <Home />
-          </UserLayout>
+          <HomePage/>
         }
       />
 

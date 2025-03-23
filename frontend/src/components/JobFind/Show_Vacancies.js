@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Input } from "antd";
+import { Table, Button, Input, Card } from "antd";
 import axios from "axios";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import PageWithTitleSearch from "../common/PageWithTitleSearch";
 
-const { Search } = Input;
-
-const Showvacancies = () => {
+const ShowVacancies = () => {
   const [jobList, setJobList] = useState([]);
   const [searchText, setSearchText] = useState("");
 
-  function getAllJobVacancies() {
+  useEffect(() => {
     axios
       .get("http://localhost:4000/jobHire/")
       .then((res) => {
@@ -20,44 +17,41 @@ const Showvacancies = () => {
       .catch((err) => {
         alert(err.message);
       });
-  }
-  useEffect(() => {
-    getAllJobVacancies();
   }, []);
 
   const columns = [
     {
-      title: "Job Title",
+      title: <span style={{ fontSize: "16px", fontWeight: "bold" }}>Job Title</span>,
       dataIndex: "jobTitle",
       key: "jobTitle",
     },
     {
-      title: "Company",
+      title: <span style={{ fontSize: "16px", fontWeight: "bold" }}>Company</span>,
       dataIndex: "company",
       key: "company",
     },
     {
-      title: "Location",
+      title: <span style={{ fontSize: "16px", fontWeight: "bold" }}>Location</span>,
       dataIndex: "location",
       key: "location",
     },
     {
-      title: "Opening Date",
+      title: <span style={{ fontSize: "16px", fontWeight: "bold" }}>Opening Date</span>,
       dataIndex: "openingDate",
       key: "openingDate",
     },
     {
-      title: "Closing Date",
+      title: <span style={{ fontSize: "16px", fontWeight: "bold" }}>Closing Date</span>,
       dataIndex: "closingDate",
       key: "closingDate",
     },
     {
-      title: "Action",
+      title: <span style={{ fontSize: "16px", fontWeight: "bold" }}>Action</span>,
       key: "action",
       render: (text, record) => (
         <span>
-          <Link to={"/jobApply/" + record._id}>
-            <Button icon={<CheckCircleOutlined />}></Button>
+          <Link to={`/jobApply/${record._id}`}>
+            <Button type="primary" icon={<CheckCircleOutlined />} />
           </Link>
         </span>
       ),
@@ -65,18 +59,81 @@ const Showvacancies = () => {
   ];
 
   return (
-    <PageWithTitleSearch
-      hasSearch={true}
-      title={"Job vacancies"}
-      onSearch={setSearchText}
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        backgroundColor: "#f0f2f5",
+      }}
     >
-      <Table
-        columns={columns}
-        dataSource={jobList.filter((job) =>
-          job.jobTitle.toLowerCase().includes(searchText.toLowerCase())
-        )}
-      />
-    </PageWithTitleSearch>
+      <Card
+        style={{
+          width: "80%",
+          maxWidth: "1000px",
+          padding: "20px",
+          backgroundColor: "white",
+          boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
+          borderRadius: "8px",
+        }}
+      >
+        {/* Header Section */}
+        <div
+          style={{
+            backgroundColor: "#001f3f",
+            padding: "12px",
+            borderRadius: "6px",
+            textAlign: "center",
+          }}
+        >
+          <h2 style={{ color: "white", margin: 0 }}>Job Vacancies</h2>
+        </div>
+
+        {/* Search Bar */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            margin: "20px 0",
+          }}
+        >
+          <Input
+            placeholder="Search by job title"
+            onChange={(e) => setSearchText(e.target.value)}
+            style={{
+              width: "250px",
+              textAlign: "center",
+              borderRadius: "20px",
+            }}
+          />
+        </div>
+
+        {/* Dark Blue Outer Div */}
+        <div
+          style={{
+            backgroundColor: "#001f3f",
+            padding: "15px",
+            borderRadius: "6px",
+          }}
+        >
+          {/* Data Table */}
+          <Table
+            columns={columns}
+            dataSource={jobList.filter((job) =>
+              job.jobTitle.toLowerCase().includes(searchText.toLowerCase())
+            )}
+            pagination={{ pageSize: 5 }}
+            bordered
+            style={{
+              backgroundColor: "white",
+              borderRadius: "6px",
+            }}
+          />
+        </div>
+      </Card>
+    </div>
   );
 };
-export default Showvacancies;
+
+export default ShowVacancies;

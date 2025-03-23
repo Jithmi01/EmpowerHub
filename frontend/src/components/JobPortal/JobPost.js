@@ -40,7 +40,7 @@ const JobPost = (props) => {
     selectedItem,
   } = props;
 
-  const [size, setSize] = useState("large"); // default is 'middle'
+  const [size, setSize] = useState("large");
   const [jobTitle, setJobTitle] = useState("");
   const [location, setLocation] = useState("");
   const [openingDate, setOpeningDate] = useState("");
@@ -108,18 +108,23 @@ const JobPost = (props) => {
         width={1000}
         footer={null}
       >
-        <WrapperCard style={{ backgroundColor: "#37475E" }}>
+        <WrapperCard style={{ backgroundColor: "#2c3e50" }}>
           <CustomRow
-            style={{ justifyContent: "space-between", padding: "1px" }}
+            style={{ justifyContent: "space-between", padding: "1px", marginBottom: '20px' }}
           >
-            <h1 style={{ color: "White", paddingLeft: 20, fontSize: 20 }}>
+            <h1 style={{ color: "white", paddingLeft: 20, fontSize: 24, fontWeight: 'bold' }}>
               Add New Vacancy
             </h1>
           </CustomRow>
         </WrapperCard>
         <Form
-          // onSubmit={sendData}
-          style={{ padding: 1, paddingLeft: 110 }}
+          style={{
+            padding: 1,
+            paddingLeft: 110,
+            backgroundColor: "#e0f7fa", 
+            borderRadius: "8px",
+            fontSize: "16px", 
+          }}
         >
           <br></br>
           <br></br>
@@ -127,10 +132,9 @@ const JobPost = (props) => {
           <br></br>
 
           <Row>
-            {/* <Col span={12}> */}
             <Form.Item
               name="name"
-              label="Job Title"
+              label={<span style={{ fontWeight: "bold", fontSize: "18px" }}>Job Title</span>}
               initialValue={selectedItem?.jobTitle}
               rules={[
                 {
@@ -143,10 +147,11 @@ const JobPost = (props) => {
                 onChange={(val) => {
                   setJobTitle(val.target.value);
                 }}
+                style={{ fontSize: "16px" }} 
               />
             </Form.Item>
             <Col span={3} />
-            <Form.Item name="openingDate" label="Opening Date" {...config}>
+            <Form.Item name="openingDate" label={<span style={{ fontWeight: "bold", fontSize: "18px" }}>Opening Date</span>} {...config}>
               <DatePicker
                 defaultValue={
                   selectedItem
@@ -154,16 +159,16 @@ const JobPost = (props) => {
                     : null
                 }
                 onChange={onChangeOP}
+                style={{ fontSize: "16px" }} 
               />
             </Form.Item>
-            {/* </Col> */}
           </Row>
           <br></br>
 
           <Row>
             <Form.Item
               name="location"
-              label="Location"
+              label={<span style={{ fontWeight: "bold", fontSize: "18px" }}>Location</span>}
               initialValue={selectedItem?.location}
               rules={[
                 {
@@ -176,12 +181,13 @@ const JobPost = (props) => {
                 onChange={(val) => {
                   setLocation(val.target.value);
                 }}
+                style={{ fontSize: "16px" }} 
               />
             </Form.Item>
             <br></br>
             <Col span={3} />
 
-            <Form.Item name="closingDate" label="Closing Date" {...config}>
+            <Form.Item name="closingDate" label={<span style={{ fontWeight: "bold", fontSize: "18px" }}>Closing Date</span>} {...config}>
               <DatePicker
                 defaultValue={
                   selectedItem
@@ -189,6 +195,7 @@ const JobPost = (props) => {
                     : null
                 }
                 onChange={onChangeCD}
+                style={{ fontSize: "16px" }} 
               />
             </Form.Item>
           </Row>
@@ -197,7 +204,7 @@ const JobPost = (props) => {
           <Row>
             <Form.Item
               name="company"
-              label="Company"
+              label={<span style={{ fontWeight: "bold", fontSize: "18px" }}>Company</span>}
               initialValue={selectedItem?.company}
               rules={[
                 {
@@ -210,6 +217,7 @@ const JobPost = (props) => {
                 onChange={(val) => {
                   setCompany(val.target.value);
                 }}
+                style={{ fontSize: "16px" }} 
               />
             </Form.Item>
           </Row>
@@ -222,7 +230,11 @@ const JobPost = (props) => {
                 type="primary"
                 color="red"
                 htmlType="submit"
-                style={{ backgroundColor: "#f44336", fontWeight: "bold" }}
+                style={{
+                  backgroundColor: "#f44336",
+                  fontWeight: "bold",
+                  fontSize: "16px", // Font size for button
+                }}
                 onClick={handleCancel}
               >
                 Cancel
@@ -234,7 +246,10 @@ const JobPost = (props) => {
                 <Button
                   type="primary"
                   htmlType="submit"
-                  style={{ fontWeight: "bold" }}
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "16px", // Font size for button
+                  }}
                   onClick={handleSubmit}
                 >
                   {selectedItem ? "Edit" : "Submit"}

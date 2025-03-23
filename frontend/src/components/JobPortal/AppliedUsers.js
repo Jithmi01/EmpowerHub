@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Input } from "antd";
+import { Table, Input, Card } from "antd";
 import axios from "axios";
-import PageWithTitleSearch from "../common/PageWithTitleSearch";
 import { useParams } from "react-router-dom";
 
 const Showvacancies = () => {
@@ -21,7 +20,7 @@ const Showvacancies = () => {
         });
     }
     getAppliedUsers();
-  }, []);
+  }, [id]);
 
   const columns = [
     {
@@ -44,26 +43,72 @@ const Showvacancies = () => {
       dataIndex: "contactNum",
       key: "contactNum",
     },
-    {
-      title: "Past Experience",
-      dataIndex: "pastExp",
-      key: "pastExp",
-    },
   ];
 
   return (
-    <PageWithTitleSearch
-      hasSearch={true}
-      title={"Applied Users"}
-      onSearch={setSearchText}
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        backgroundColor: "#f0f2f5",
+      }}
     >
-      <Table
-        columns={columns}
-        dataSource={appliedUsersList.filter((job) =>
-          job.email.toLowerCase().includes(searchText.toLowerCase())
-        )}
-      />
-    </PageWithTitleSearch>
+      <Card
+        style={{
+          width: "80%",
+          maxWidth: "1000px",
+          padding: "20px",
+          backgroundColor: "white",
+          boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
+          borderRadius: "8px",
+        }}
+      >
+        {/* Header Section */}
+        <div
+          style={{
+            backgroundColor: "#001f3f",
+            padding: "12px",
+            borderRadius: "6px",
+            textAlign: "center",
+          }}
+        >
+          <h2 style={{ color: "white", margin: 0 }}>Applied Users</h2>
+        </div>
+
+        {/* Search Bar */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            margin: "20px 0",
+          }}
+        >
+          <Input
+            placeholder="Search by name"
+            onChange={(e) => setSearchText(e.target.value)}
+            style={{
+              width: "250px",
+              textAlign: "center",
+              borderRadius: "20px",
+            }}
+          />
+        </div>
+
+        {/* Data Table */}
+        <Table
+          columns={columns}
+          dataSource={appliedUsersList.filter((user) =>
+            user.firstName.toLowerCase().includes(searchText.toLowerCase())
+          )}
+          pagination={{ pageSize: 5 }}
+          bordered
+        />
+      </Card>
+    </div>
   );
 };
+
 export default Showvacancies;
+
