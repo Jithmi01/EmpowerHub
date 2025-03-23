@@ -1,242 +1,99 @@
-import { useEffect, useState } from "react"
-import logo from "../../assets/images/logo.png"
-import { DualAxes } from '@ant-design/plots';
-import { Card, Col, Row, Typography, Table, Progress } from "antd"
-import { AppstoreTwoTone, UserOutlined } from "@ant-design/icons"
-import axios, { Axios } from 'axios';
+import { useEffect, useState } from "react";
+import { Card, Col, Row, Typography, Progress } from "antd";
+import WorkIcon from '@mui/icons-material/Work';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import axios from "axios";
 
-const url = "http://localhost:4000/financial/";
 const url1 = "http://localhost:4000/event/getAll";
 
 function Admin() {
-    const { Title, Text } = Typography
+    const { Title } = Typography;
     const [donate, setDonate] = useState([]);
-    const [users, setUser] = useState()
     const [jobList, setJobList] = useState([]);
-    const [financial, setFinancial] = useState([]);
-    const [items, setItems] = useState([]);
-    const [totalSum, setTotalSum] = useState(0);
     const [eventDetails, setAllEventDetails] = useState([]);
 
-    function getJobList() {
+    useEffect(() => {
         axios.get("http://localhost:4000/jobHire/")
-            .then((res) => {
-                setJobList(res.data);
-            })
-            .catch((err) => {
-                alert(err.message);
-            });
-    }
-    useEffect(() => {
-        getJobList();
-    }, [])
-
-    function getAllEventDetails() {
-        axios
-            .get("http://localhost:4000/event/getAll")
-            .then((res) => {
-                setAllEventDetails(res.data.Event);
-            })
-            .catch(() => {
-                alert("Check The Connectivity");
-            });
-    }
-    // console.log(eventDetails);
-    useEffect(() => getAllEventDetails(), []);
-    //get Donation
-    function getDonations() {
-        axios.get("http://localhost:4000/donation/")
-            .then((res) => {
-                setDonate(res.data);
-            })
-            .catch((err) => {
-                alert(err.message);
-            });
-    }
-    useEffect(() => {
-        getDonations();
-    }, [])
-
-    const totalevents = eventDetails.length;
-    const totalFReport = financial.length;
-    const totalDonation = donate.length;
-    const totaljOB = jobList.length;
-
-
-
-    async function getFinancial() {
-        await axios.get("http://localhost:4000/financial/")
-            .then((res) => {
-                console.log(res.data)
-                setFinancial(res.data);
-            })
-            .catch((err) => {
-                alert(err.message);
-            });
-    }
-
-    useEffect(() => {
-        getFinancial().then((va) => {
-            console.log(`===> ${financial}`)
-        })
+            .then((res) => setJobList(res.data))
+            .catch((err) => alert(err.message));
     }, []);
 
-    // useEffect(() => {
-    //     const getData = async () => {
-    //         const response = await fetch(url);
-    //         const financial = await response.json();
-    //         setFinancial(financial);
-    //         console.timeLog(financial);
-    //     };
-    //     getData()
-    // }, []);
+    useEffect(() => {
+        axios.get(url1)
+            .then((res) => setAllEventDetails(res.data.Event))
+            .catch(() => alert("Check The Connectivity"));
+    }, []);
 
     useEffect(() => {
-        if (financial) {
-            const total = financial.reduce((acc, row) => acc + row.total, 0);
-            setTotalSum(total);
-        }
-    }, [financial]);
+        axios.get("http://localhost:4000/donation/")
+            .then((res) => setDonate(res.data))
+            .catch((err) => alert(err.message));
+    }, []);
+
+    const totalEvents = eventDetails.length;
+    const totalDonations = donate.length;
+    const totalJobs = jobList.length;
 
     const count = [
         {
-            today: "Total Job posted",
-            title: `${totaljOB}`,
-            icon: <UserOutlined />,
-            bnb: "bnb2",
+            today: "Total Job Posted",
+            title: totalJobs,
+            icon: <WorkIcon style={{ fontSize: 40 }} />,  
+            color: "#25476A", // Dark Blue
         },
         {
-            today: "Total Donation",
-            title: `${totalDonation}`,
-            icon: <AppstoreTwoTone />,
-            bnb: "bnb2",
-
+            today: "Total Donations",
+            title: totalDonations,
+            icon: <VolunteerActivismIcon style={{ fontSize: 40 }} />, 
+            color: "#6A0DAD", // Purple
         },
         {
             today: "Total Events",
-            title: `${totalevents}`,
-            icon: <AppstoreTwoTone />,
-            bnb: "redtext",
-
-
+            title: totalEvents,
+            icon: <EmojiEventsIcon style={{ fontSize: 40 }} />, 
+            color: "#228B22", // Green
         },
-        {
-            today: "Total Financial Report",
-            title: `${totalFReport}`,
-            icon: <UserOutlined />,
-            bnb: "bnb2",
-        },
-
-    ]
-
-
-    const columns = [
-        {
-            title: 'Financial History',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: 'Total',
-            dataIndex: 'total',
-            key: 'total',
-        },
-        {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
-        },
-
     ];
+
     return (
-        <>
-            <div
-                className="dashbaord"
-                style={{
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "repeat",
-
-
-                }}
-            >
-                <div style={{ paddingLeft: 100 }} >
-                    <div style={{ paddingLeft: 70 }} ></div>
-                    <Col span={5} />
-
-                    <div className="layout-content" style={{ padding: "16px", paddingLeft: 25 }}>
-                        <Row className="rowgap-vbox" gutter={[24, 0]}>
-                            {count.map((c, index) => (
-                                <Col
-                                    key={index}
-                                    xs={24}
-                                    sm={24}
-                                    md={12}
-                                    lg={6}
-                                    xl={6}
-                                    className="mb-24"
-                                >
-                                    <Card bordered={false} className="criclebox" style={{ boxShadow:"2px 10px 10px 2px lightblue",backgroundColor:"#25476A",fontWeight:"bold",fontSize:25,color:"white"}}>
-                                        <div className="number"  style={{fontSize:20,fontFamily:"serif"}}>
-                                            <Row align="middle" gutter={[35, 7]}>
-                                                <Col xs={18}>
-                                                    <span>{c.today}</span>
-                                                    <Title level={3}>
-                                                        {c.title} <small className={c.bnb}></small>
-                                                    </Title>
-                                                </Col>
-                                                <Col xs={7}>
-                                                    <div className="icon-box">{c.icon}</div>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                    </Card>
-                                </Col>
-                            ))}
-                        </Row>
-
-                        <br></br><br></br><br></br><br></br>
-                        <Row >
-                            <div>
-                                <Card style={{ boxShadow:"2px 5px 5px 5px lightblue"}}>
-                                    <h1>Details Bar</h1>
-                                    <Progress percent={totalFReport} strokeColor="red" />
-                                    <span>Total Financial Report</span>
-
-                                    <Progress percent={totalDonation} strokeColor="#2db7f5" Text="hello" />
-                                    <span>Total Donation</span>
-
-                                    <Progress percent={totalevents} strokeColor="#87d068" />
-                                    <span>Total Events</span>
-
-                                    <Progress percent={totaljOB} strokeColor="blue" />
-                                    <span>Total Job posted</span>
-
+        <div className="dashboard" style={{ backgroundSize: "cover", backgroundPosition: "center" }}>
+            <div style={{ paddingLeft: 50, paddingRight: 50 }}>
+                <div className="layout-content" style={{ padding: "16px" }}>
+                    <Row gutter={[24, 0]}>
+                        {count.map((c, index) => (
+                            <Col key={index} xs={24} sm={24} md={8} lg={8} xl={8} className="mb-24">
+                                <Card bordered={false} className="circlebox" style={{ backgroundColor: c.color, color: "white", fontSize: 28, fontWeight: "bold", textAlign: "left", padding: 20, boxShadow: "2px 10px 10px 2px lightblue" }}>
+                                    <div className="number" style={{ fontSize: 26, fontFamily: "serif" }}>
+                                        <Row align="middle">
+                                            <Col span={24}>{c.icon}</Col>
+                                            <Col span={24}>
+                                                <Title level={2} style={{ color: "white", fontSize: 36 }}>{c.title}</Title>
+                                                <span style={{ fontSize: 22 }}>{c.today}</span>
+                                            </Col>
+                                        </Row>
+                                    </div>
                                 </Card>
-                            </div>
-                            <Col span={1} />
-                            <Card style={{ boxShadow:"2px 5px 5px 5px lightblue"}}>
-                                <div>
-                                    <Table columns={columns} dataSource={financial} />
-                                    <Card><Row>
-                                        <Col span={18}>
-                                            <h3>Total  : Rs {totalSum}</h3>
-                                        </Col>
-                                    </Row></Card>
-
-
-
-                                </div>
-                            </Card>
-                        </Row>
-                        <br>
-                        </br>
-
-                    </div>
+                            </Col>
+                        ))}
+                    </Row>
+                    <br />
+                    <Card style={{ boxShadow: "2px 5px 5px 5px lightblue", padding: 20 }}>
+                        <Title level={2} style={{ fontSize: 30, textAlign: "left",marginTop:"-10px" }}>Details Bar</Title>
+                        <Card style={{ backgroundColor: "#f5f5f5", padding: 20, boxShadow: "none" }}>
+                            <Progress percent={totalDonations} strokeColor="#6A0DAD" style={{ height: 20 }} />
+                            <span style={{ fontSize: 20, display: "block", textAlign: "left" }}>Total Donations</span>
+                            <Progress percent={totalEvents} strokeColor="#228B22" style={{ height: 20 }} />
+                            <span style={{ fontSize: 20, display: "block", textAlign: "left" }}>Total Events</span>
+                            <Progress percent={totalJobs} strokeColor="#25476A" style={{ height: 20 }} />
+                            <span style={{ fontSize: 20, display: "block", textAlign: "left" }}>Total Job Posted</span>
+                        </Card>
+                    </Card>
+                    <br />
                 </div>
             </div>
-        </>
-    )
+        </div>
+    );
 }
 
-export default Admin
+export default Admin;

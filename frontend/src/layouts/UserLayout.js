@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Header_bar from "../components/common/header_bar";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  BankTwoTone,
-  UserOutlined,
-  LineChartOutlined,
-  CarFilled,
-} from "@ant-design/icons";
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import WorkIcon from '@mui/icons-material/Work';
+import PersonIcon from '@mui/icons-material/Person';
+import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { Layout, Menu } from "antd";
 import { Content, Footer } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
@@ -28,19 +28,19 @@ const UserLayout = ({ children }) => {
   }
 
   const items = [
-    getItem("Dashboard", "/", <BankTwoTone />),
-    getItem("Donate Now", "/adsUserView", <BankTwoTone />),
-    getItem("My Donation", "/showDonation", <UserOutlined />),
-    getItem("Job Portal", "/showVacancies", <CarFilled />),
-    getItem("Applied Jobs", "/appliedJobs", <CarFilled />),
-    getItem("Events", "/userEvent", <LineChartOutlined />),
+    getItem("Dashboard", "/", <DashboardIcon  style={{ fontSize: 20 }}/>),
+    getItem("Donate Now", "/adsUserView", <VolunteerActivismIcon style={{ fontSize: 20 }}/>),
+    getItem("My Donation", "/showDonation", <PersonIcon style={{ fontSize: 20 }}/> ),
+    getItem("Job Portal", "/showVacancies", <WorkIcon style={{ fontSize: 20 }}/>),
+    getItem("Applied Jobs", "/appliedJobs", <WorkHistoryIcon style={{ fontSize: 20 }}/>),
+    getItem("Events", "/userEvent", <EmojiEventsIcon style={{ fontSize: 20 }}/>),
   ];
 
   return (
     <>
       <Header_bar />
       <Layout>
-        <Sider
+        <Sider className="sidebar"
           collapsible
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
@@ -59,6 +59,12 @@ const UserLayout = ({ children }) => {
           </Footer>
         </Layout>
       </Layout>
+
+      style{
+        `
+        .sidebar: paddingTop:20px
+        `
+      }
     </>
   );
 };
